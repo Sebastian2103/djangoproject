@@ -20,7 +20,7 @@ class CommentCreateView(generics.CreateAPIView):
 class CommentAdminViewSet(viewsets.ModelViewSet):
     """Admin CRUD for comments"""
     queryset = Comment.objects.all()
-    serializer_class = MatchSerializer
+    serializer_class = CommentSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminUser, )
 

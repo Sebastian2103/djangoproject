@@ -7,11 +7,11 @@ from club.models import Club
 from club.serializers import ClubSerializer
 
 class ClubViewSet(viewsets.ModelViewSet):
-    """"CRUD for club. only admin user"""
-    queryset = Club.objects.all()
-    serializer_class = ClubSerializer
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAdminUser, )
+    """CRUD for club. only admin user"""
+    # queryset = Club.objects.all()
+    # serializer_class = ClubSerializer
+    # authentication_classes = (TokenAuthentication, )
+    # permission_classes = (IsAdminUser, )
 
 
 

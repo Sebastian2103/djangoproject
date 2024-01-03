@@ -1,11 +1,17 @@
 from django.shortcuts import render
 
-# Create your views here.
-from rest_framework import generics, authentication, permissions
+from rest_framework import generics, authentication, permissions, status
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from rest_framework.views import APIView
 
 from user.serializers import UserSerializer, AuthTokenSerializer
+
+from user.models import User
+
+from club.models import Club
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -32,3 +38,5 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         """Retrieve and return authenticated user"""
 
         return self.request.user
+
+
