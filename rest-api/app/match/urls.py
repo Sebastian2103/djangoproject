@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
-from match.views import  CommentCreateView, CommentAdminViewSet,MatchAdminViewSet
+from match.views import  CommentCreateView, CommentAdminViewSet,MatchAdminViewSet, PlayerMatchRatingView
 
 app_name = 'match'
 
@@ -12,5 +12,6 @@ router1.register(r'match', MatchAdminViewSet, basename='')
 urlpatterns = [
 path('comments/create/', CommentCreateView.as_view(), name='create_match_comment'),
 path('comments/crud', include(router.urls)),
-path('crud/', include(router1.urls))
+path('crud/', include(router1.urls)),
+path('player/<int:match_id>/ratings/', PlayerMatchRatingView.as_view(), name='match-ratings'),
 ]

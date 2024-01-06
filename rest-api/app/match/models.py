@@ -20,7 +20,17 @@ class Match(models.Model):
                 f" Home Team: {self.home_team} vs {self.away_team}\n"
                 f" Result: {self.result}")
 
+class PlayerRating(models.Model):
+    """"Player rating model"""
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    rating = models.DecimalField(max_digits=3, decimal_places=1)
 
+    class Meta:
+        unique_together = ('match', 'player')  # Unikalność oceny dla każdego zawodnika w danym meczu
+
+    def __str__(self):
+        return f"{self.player.name} - {self.match.date} - Rating: {self.rating}"
 
 class Comment(models.Model):
     """Match comment model"""
@@ -31,12 +41,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.date_added} - {self.match}"
-
-# class PlayerMatchStats(models.Model):
-#     "Model to store players raiting"
-#     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-#     match = models.ForeignKey(Match, on_delete=models.CASCADE)
-#     rating = models.DecimalField(max_digits=3, decimal_places=2)
-#
-#     def __str__(self):
-#         return f"{self.player.name} - Match: {self.match.date} - Rating: {self.rating}"

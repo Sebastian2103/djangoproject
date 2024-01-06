@@ -12,6 +12,7 @@ from user.serializers import UserSerializer, AuthTokenSerializer
 from user.models import User
 
 from club.models import Club
+from club.serializers import ClubSerializer
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -39,4 +40,18 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
         return self.request.user
 
+class UserFavoriteClubView(generics.CreateAPIView):
+    serializer_class = ClubSerializer
 
+    def perform_create(self, serializer):
+        club_id = self.request.data.get('club_id')
+        if club_id:
+            try:
+                club = Club.objects.get(pk=club_id)
+                user = self.request.user
+                user.favorite_teams.add(club)
+                serializer.save(favorite_teams=user.favorite_teams.all())
+            except Club.DoesNotExist:
+                return Response({"error": "Club does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "Club ID is required"}, status=status.HTTP_400_BAD_REQUEST)

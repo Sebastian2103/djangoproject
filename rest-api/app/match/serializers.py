@@ -3,9 +3,11 @@ from rest_framework import serializers
 from user.serializers import UserSerializer
 from match.models import Comment
 
-from match.models import Match
+from match.models import Match, PlayerRating
 
 from club.serializers import ClubSerializer
+
+from player.models import Player
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -21,3 +23,10 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = ('id', 'date', 'location', 'home_team', 'away_team', 'result','stadium')
+
+class PlayerRatingSerializer(serializers.ModelSerializer):
+    match = serializers.PrimaryKeyRelatedField(queryset=Match.objects.all())
+    player = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all())
+    class Meta:
+        model = PlayerRating
+        fields = ('id', 'match', 'player', 'rating')

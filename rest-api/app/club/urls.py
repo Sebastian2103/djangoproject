@@ -1,13 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-# from club import views
-#
-# app_name = 'club'
-# router = DefaultRouter()
-
-# router.register('clubs', views.ClubViewSet, basename='clubs')
+# from club.views import ClubFavoriteView
 #
 # urlpatterns = [
-#     path('', include(router.urls))
+#     path('favorite/', ClubFavoriteView.as_view(), name='club-favorite'),
 # ]

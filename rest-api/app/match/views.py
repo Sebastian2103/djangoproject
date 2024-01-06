@@ -4,8 +4,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from .models import Comment, Match
-from .serializers import CommentSerializer, MatchSerializer
+from .models import Comment, Match, PlayerRating
+from .serializers import CommentSerializer, MatchSerializer, PlayerRatingSerializer
 # Create your views here.
 
 class CommentCreateView(generics.CreateAPIView):
@@ -30,3 +30,11 @@ class MatchAdminViewSet(viewsets.ModelViewSet):
     serializer_class = MatchSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminUser, )
+
+class PlayerMatchRatingView(generics.ListCreateAPIView):
+    queryset = PlayerRating.objects.all()
+    serializer_class = PlayerRatingSerializer
+
+    def get_queryset(self):
+        match_id = self.kwargs['match_id']
+        return PlayerRating.objects.filter(match_id=match_id)
