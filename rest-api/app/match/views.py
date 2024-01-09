@@ -14,8 +14,8 @@ class CommentCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        match_id = self.request.data.get('match')  # Pobranie identyfikatora meczu z danych żądania
-        serializer.save(user_added=self.request.user, match_id=match_id)  # Zapis komentarza z odpowiednim meczem
+        match_id = self.request.data.get('match')
+        serializer.save(user_added=self.request.user, match_id=match_id)
 
 class CommentAdminViewSet(viewsets.ModelViewSet):
     """Admin CRUD for comments"""

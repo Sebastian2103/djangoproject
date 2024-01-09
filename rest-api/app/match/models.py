@@ -12,7 +12,6 @@ class Match(models.Model):
     away_team = models.ForeignKey(Club, related_name='away_matches', on_delete=models.CASCADE)
     result = models.CharField(max_length=50)
     stadium = models.CharField(max_length=100)
-    # players = models.ManyToManyField(Player, through='PlayerMatchStats', related_name='matches')
 
 
     def __str__(self):

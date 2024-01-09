@@ -14,6 +14,9 @@ from user.models import User
 from club.models import Club
 from club.serializers import ClubSerializer
 
+from match.models import Match
+from match.serializers import MatchSerializer
+
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
@@ -40,18 +43,22 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
         return self.request.user
 
-class UserFavoriteClubView(generics.CreateAPIView):
+class UserFavoriteClubListView(generics.ListAPIView):
     serializer_class = ClubSerializer
 
-    def perform_create(self, serializer):
-        club_id = self.request.data.get('club_id')
-        if club_id:
-            try:
-                club = Club.objects.get(pk=club_id)
-                user = self.request.user
-                user.favorite_teams.add(club)
-                serializer.save(favorite_teams=user.favorite_teams.all())
-            except Club.DoesNotExist:
-                return Response({"error": "Club does not exist"}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({"error": "Club ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        user = self.request.user
+        return user.favorite_teams.all()
+
+
+class UserFavoriteMatchesView(generics.ListAPIView):
+    serializer_class = MatchSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        favorite_teams = user.favorite_teams.all()
+
+        queryset = Match.objects.filter(home_team__in=favorite_teams) | Match.objects.filter(
+            away_team__in=favorite_teams)
+
+        return queryset
